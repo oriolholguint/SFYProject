@@ -3,17 +3,13 @@ package com.example.sfyproject;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.sfyproject.adapters.ImageAdapter;
 import com.example.sfyproject.interfaces.ImageApi;
 import com.example.sfyproject.models.Image;
 import com.example.sfyproject.models.ImageList;
-import com.google.gson.JsonObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -27,8 +23,9 @@ public class MainActivity extends AppCompatActivity
     public final static String BASE_URL = "https://api.unsplash.com/";
     public final static String API_KEY = "oLLCTeG87yFwYsu5tTLa4Gmg_cdBP2bBzuzJJK9zEmY";
     private static ArrayList<Image> images;
+    private ImageAdapter imageAdapter;
 
-    private RecyclerView imagesList;
+    private RecyclerView rvList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -41,9 +38,12 @@ public class MainActivity extends AppCompatActivity
 
     public void initComponents()
     {
-        imagesList = findViewById(R.id.imagesList);
+        rvList = findViewById(R.id.rvList);
 
         images = new ArrayList<>();
+        imageAdapter = new ImageAdapter(images);
+        rvList.setHasFixedSize(true);
+        rvList.setAdapter(imageAdapter);
 
         searchImages("flowers");
     }
@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity
                 if(response.isSuccessful())
                 {
                     images.addAll(response.body().getresults());
+                    imageAdapter.notifyDataSetChanged();
                 }
             }
 
