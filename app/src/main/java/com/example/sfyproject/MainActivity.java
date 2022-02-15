@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.sfyproject.fragments.ImageDetailFragment;
@@ -12,6 +13,8 @@ import com.example.sfyproject.interfaces.FragmentCallback;
 import com.example.sfyproject.interfaces.UnsplashApi;
 import com.example.sfyproject.models.Image;
 import com.example.sfyproject.models.ImageList;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
