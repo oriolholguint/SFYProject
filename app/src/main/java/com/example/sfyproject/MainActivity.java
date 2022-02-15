@@ -1,6 +1,8 @@
 package com.example.sfyproject;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -41,11 +43,12 @@ public class MainActivity extends AppCompatActivity
         rvList = findViewById(R.id.rvList);
 
         images = new ArrayList<>();
-        imageAdapter = new ImageAdapter(images);
+        imageAdapter = new ImageAdapter(this, images);
         rvList.setHasFixedSize(true);
+        rvList.setLayoutManager(new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL,false));
         rvList.setAdapter(imageAdapter);
 
-        searchImages("flowers");
+        searchImages("flores");
     }
 
     public void searchImages(String query)
