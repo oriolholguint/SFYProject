@@ -1,21 +1,12 @@
 package com.example.sfyproject;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.sfyproject.interfaces.UnsplashApi;
-import com.example.sfyproject.models.Image;
-import com.example.sfyproject.models.ImageList;
-
-import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SplashActivity extends AppCompatActivity
 {
@@ -23,10 +14,31 @@ public class SplashActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        Intent intent = new Intent(this, MainActivity.class);
+        SharedPreferences preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
+
+        Intent intent;
+
+        if(!preferences.getBoolean("on_board_screen", false))
+        {
+            savePreferences(preferences);
+            intent = new Intent(this, OnBoardActivity.class);
+        }
+        else
+        {
+            intent = new Intent(this, MainActivity.class);
+        }
+
         startActivity(intent);
         finish();
     }
+
+    public void savePreferences(SharedPreferences sharedPreferences)
+    {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("on_board_screen", true);
+        editor.commit();
+    }
+
     /*public void searchImages (String query)
     {
         Retrofit retrofit = new Retrofit.Builder()
