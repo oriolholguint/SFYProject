@@ -6,8 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,7 +15,6 @@ import com.example.sfyproject.R;
 import com.example.sfyproject.adapters.ImageAdapter;
 import com.example.sfyproject.interfaces.FragmentCallback;
 import com.example.sfyproject.models.Image;
-import com.example.sfyproject.models.ImageList;
 
 import java.util.ArrayList;
 
@@ -53,7 +50,7 @@ public class ImageListFragment extends Fragment
             public void onClick(View view)
             {
                 Image image = images.get(rvList.getChildAdapterPosition(view));
-
+                fragmentCallback.showImageDetailFragment(image);
             }
         });
 

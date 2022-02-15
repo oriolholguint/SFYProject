@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.sfyproject.adapters.ImageAdapter;
+import com.example.sfyproject.fragments.ImageDetailFragment;
 import com.example.sfyproject.fragments.ImageListFragment;
 import com.example.sfyproject.interfaces.FragmentCallback;
 import com.example.sfyproject.interfaces.ImageApi;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback
     public final static String API_KEY = "oLLCTeG87yFwYsu5tTLa4Gmg_cdBP2bBzuzJJK9zEmY";
     private FragmentManager fragmentManager;
     private ImageListFragment imageListFragment;
+    private ImageDetailFragment imageDetailFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback
     public void initComponents()
     {
         imageListFragment = new ImageListFragment(this);
+        imageDetailFragment = new ImageDetailFragment();
 
         showImageListFragment();
         searchImages("flowers");
@@ -91,6 +94,11 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback
     @Override
     public void showImageDetailFragment(Image image)
     {
-
+        fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        imageListFragment.fragmentCallback = this;
+        imageDetailFragment.setImage(image);
+        fragmentTransaction.replace(R.id.frgContainter, imageDetailFragment);
+        fragmentTransaction.commit();
     }
 }
