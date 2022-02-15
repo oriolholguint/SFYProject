@@ -3,22 +3,15 @@ package com.example.sfyproject;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.view.View;
 
-import com.example.sfyproject.adapters.ImageAdapter;
 import com.example.sfyproject.fragments.ImageDetailFragment;
 import com.example.sfyproject.fragments.ImageListFragment;
 import com.example.sfyproject.interfaces.FragmentCallback;
-import com.example.sfyproject.interfaces.ImageApi;
+import com.example.sfyproject.interfaces.UnsplashApi;
 import com.example.sfyproject.models.Image;
 import com.example.sfyproject.models.ImageList;
-
-import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -59,9 +52,9 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        ImageApi imageApi = retrofit.create(ImageApi.class);
+        UnsplashApi unsplashApi = retrofit.create(UnsplashApi.class);
 
-        Call<ImageList> call=imageApi.searchImages(query, API_KEY);
+        Call<ImageList> call= unsplashApi.searchImages(query, API_KEY);
         call.enqueue(new Callback<ImageList>()
         {
             @Override

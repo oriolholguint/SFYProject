@@ -6,7 +6,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface ImageApi
+public interface UnsplashApi
 {
     //@Headers("Authorization: Client-ID "+MainActivity.API_KEY)
     @GET("/search/photos")
