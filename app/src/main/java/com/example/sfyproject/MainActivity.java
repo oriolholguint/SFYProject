@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity
                 if(response.isSuccessful())
                 {
                     images.addAll(response.body().getresults());
-                    imageAdapter.notifyDataSetChanged();
+                    imageAdapter.notifyDataSetChanged(); //No actualiza la informacion del adapter
                 }
             }
 
