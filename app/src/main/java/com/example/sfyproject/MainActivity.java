@@ -1,13 +1,18 @@
 package com.example.sfyproject;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.sfyproject.adapters.ImageAdapter;
+import com.example.sfyproject.fragments.ImageListFragment;
+import com.example.sfyproject.interfaces.FragmentCallback;
 import com.example.sfyproject.interfaces.ImageApi;
 import com.example.sfyproject.models.Image;
 import com.example.sfyproject.models.ImageList;
@@ -20,14 +25,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity implements FragmentCallback
 {
     public final static String BASE_URL = "https://api.unsplash.com/";
     public final static String API_KEY = "oLLCTeG87yFwYsu5tTLa4Gmg_cdBP2bBzuzJJK9zEmY";
-    private static ArrayList<Image> images;
-    private ImageAdapter imageAdapter;
-
-    private RecyclerView rvList;
+    private FragmentManager fragmentManager;
+    private ImageListFragment imageListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -40,15 +43,10 @@ public class MainActivity extends AppCompatActivity
 
     public void initComponents()
     {
-        rvList = findViewById(R.id.rvList);
+        imageListFragment = new ImageListFragment(this);
 
-        images = new ArrayList<>();
-        imageAdapter = new ImageAdapter(this, images);
-        rvList.setHasFixedSize(true);
-        rvList.setLayoutManager(new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL,false));
-        rvList.setAdapter(imageAdapter);
-
-        searchImages("flores");
+        showImageListFragment();
+        searchImages("flowers");
     }
 
     public void searchImages(String query)
@@ -68,8 +66,7 @@ public class MainActivity extends AppCompatActivity
             {
                 if(response.isSuccessful())
                 {
-                    images.addAll(response.body().getresults());
-                    imageAdapter.notifyDataSetChanged(); //No actualiza la informacion del adapter
+                    imageListFragment.updateData(response.body().getresults());
                 }
             }
 
@@ -81,4 +78,19 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    @Override
+    public void showImageListFragment()
+    {
+        fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        imageListFragment.fragmentCallback = this;
+        fragmentTransaction.replace(R.id.frgContainter, imageListFragment);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void showImageDetailFragment(Image image)
+    {
+
+    }
 }

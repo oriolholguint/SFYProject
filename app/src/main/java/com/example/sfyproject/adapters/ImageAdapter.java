@@ -16,13 +16,11 @@ import java.util.ArrayList;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> implements View.OnClickListener
 {
-    public Context context;
     private ArrayList<Image> images;
     private View.OnClickListener listener;
 
-    public ImageAdapter(Context context, ArrayList<Image> images)
+    public ImageAdapter(ArrayList<Image> images)
     {
-        this.context = context;
         this.images = images;
     }
 
