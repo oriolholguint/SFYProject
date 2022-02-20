@@ -45,36 +45,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback
         imageDetailFragment = new ImageDetailFragment();
 
         showImageListFragment();
-        searchImages("flowers");
-    }
 
-    public void searchImages(String query)
-    {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        UnsplashApi unsplashApi = retrofit.create(UnsplashApi.class);
-
-        Call<ImageList> call= unsplashApi.searchImages(query, API_KEY);
-        call.enqueue(new Callback<ImageList>()
-        {
-            @Override
-            public void onResponse(Call<ImageList> call, Response<ImageList> response)
-            {
-                if(response.isSuccessful())
-                {
-                    imageListFragment.updateData(response.body().getresults());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ImageList> call, Throwable t)
-            {
-
-            }
-        });
     }
 
     @Override
@@ -92,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements FragmentCallback
     {
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        imageListFragment.fragmentCallback = this;
+        imageDetailFragment.fragmentCallback = this;
         imageDetailFragment.setImage(image);
         fragmentTransaction.replace(R.id.frgContainter, imageDetailFragment);
         fragmentTransaction.commit();

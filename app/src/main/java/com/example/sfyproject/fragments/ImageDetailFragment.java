@@ -7,8 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 
+import com.example.sfyproject.MainActivity;
 import com.example.sfyproject.R;
 import com.example.sfyproject.interfaces.FragmentCallback;
 import com.example.sfyproject.models.Image;
@@ -28,6 +30,15 @@ public class ImageDetailFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.image_detail_fragment, container, false);
+        
+        getActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true)
+        {
+            @Override
+            public void handleOnBackPressed()
+            {
+                fragmentCallback.showImageListFragment();
+            }
+        });
 
         imagePic         = view.findViewById(R.id.imagePic);
         imageDate        = view.findViewById(R.id.imageDate);

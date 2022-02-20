@@ -11,12 +11,21 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.sfyproject.MainActivity;
 import com.example.sfyproject.R;
 import com.example.sfyproject.adapters.ImageAdapter;
 import com.example.sfyproject.interfaces.FragmentCallback;
+import com.example.sfyproject.interfaces.UnsplashApi;
 import com.example.sfyproject.models.Image;
+import com.example.sfyproject.models.ImageList;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ImageListFragment extends Fragment
 {
@@ -38,7 +47,12 @@ public class ImageListFragment extends Fragment
 
         rvList = view.findViewById(R.id.rvList);
 
-        images = new ArrayList<>();
+        if(images == null)
+        {
+            images = new ArrayList<>();
+            searchImages("flowers");
+        }
+
         imageAdapter = new ImageAdapter(images);
         rvList.setHasFixedSize(true);
         rvList.setLayoutManager(new GridLayoutManager(context, 2, LinearLayoutManager.VERTICAL,false));
@@ -55,6 +69,35 @@ public class ImageListFragment extends Fragment
         });
 
         return view;
+    }
+
+    public void searchImages(String query)
+    {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(MainActivity.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        UnsplashApi unsplashApi = retrofit.create(UnsplashApi.class);
+
+        Call<ImageList> call= unsplashApi.searchImages(query, MainActivity.API_KEY);
+        call.enqueue(new Callback<ImageList>()
+        {
+            @Override
+            public void onResponse(Call<ImageList> call, Response<ImageList> response)
+            {
+                if(response.isSuccessful())
+                {
+                    updateData(response.body().getresults());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ImageList> call, Throwable t)
+            {
+
+            }
+        });
     }
 
     public void updateData(ArrayList<Image> images)
